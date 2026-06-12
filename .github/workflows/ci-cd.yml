@@ -60,6 +60,6 @@ jobs:
           echo "Token length: ${#RAILWAY_TOKEN}"
           echo "Current dir: $(pwd)"
           echo "Files: $(ls -la)"
-          railway up --ci --project awake-wholeness --service awake-wholeness
+          railway up --ci --project 4af6967f-1542-4d91-9844-8c10a7c12aa8 --service awake-wholeness --environment production
         env:
           RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
