@@ -2,7 +2,7 @@
 
 ## Public URL
 ```
-https://your-agent.railway.app
+https://awake-wholeness-production-46aa.up.railway.app
 ```
 
 ## Platform
@@ -12,13 +12,13 @@ Railway / Render
 
 ### Health Check
 ```bash
-curl https://your-agent.railway.app/health
+curl https://awake-wholeness-production-46aa.up.railway.app/health
 # Expected: {"status":"ok","version":"1.0.0","environment":"production",...}
 ```
 
 ### Authentication Required (should return 401)
 ```bash
-curl -X POST https://your-agent.railway.app/ask \
+curl -X POST https://awake-wholeness-production-46aa.up.railway.app/ask \
   -H "Content-Type: application/json" \
   -d '{"user_id":"test","question":"Hello"}'
 # Expected: 401 Unauthorized
@@ -26,8 +26,8 @@ curl -X POST https://your-agent.railway.app/ask \
 
 ### API Test (with authentication)
 ```bash
-curl -X POST https://your-agent.railway.app/ask \
-  -H "X-API-Key: YOUR_API_KEY" \
+curl -X POST https://awake-wholeness-production-46aa.up.railway.app/ask \
+  -H "X-API-Key: my-secret-key-prod" \
   -H "Content-Type: application/json" \
   -d '{"user_id":"test","question":"What is Docker?"}'
 # Expected: 200 OK with question, answer, model, timestamp
@@ -36,8 +36,8 @@ curl -X POST https://your-agent.railway.app/ask \
 ### Rate Limiting Test
 ```bash
 for i in {1..15}; do
-  curl -X POST https://your-agent.railway.app/ask \
-    -H "X-API-Key: YOUR_API_KEY" \
+  curl -X POST https://awake-wholeness-production-46aa.up.railway.app/ask \
+    -H "X-API-Key: my-secret-key-prod" \
     -H "Content-Type: application/json" \
     -d "{\"user_id\":\"test\",\"question\":\"Request $i\"}"
   echo "---"
