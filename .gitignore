@@ -31,6 +31,11 @@ env/
 .DS_Store
 Thumbs.db
 
-# ── Docker volumes (local dev) ─────────────────────��──────
+# ── Coverage ───────────────────────────────────────────────
+coverage.xml
+.coverage
+htmlcov/
+
+# ── Docker volumes (local dev) ─────────────────────────────
 data/
 volumes/

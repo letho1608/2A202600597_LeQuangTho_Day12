@@ -6,8 +6,5 @@ __pycache__/
 venv/
 .venv/
 .git/
-*.md
-!README.md
-tests/
-.DS_Store
 screenshots/
+.DS_Store

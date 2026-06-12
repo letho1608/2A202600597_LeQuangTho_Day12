@@ -1,0 +1,61 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: CI - Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        working-directory: my-production-agent
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+          pip install --no-cache-dir -r tests/requirements.txt
+
+      - name: Lint with Ruff
+        working-directory: my-production-agent
+        run: |
+          ruff check app/ utils/ tests/
+
+      - name: Test with pytest
+        working-directory: my-production-agent
+        run: |
+          python -m pytest tests/ --cov=app --cov=utils --cov-report=term --cov-report=xml -v
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: my-production-agent/coverage.xml
+
+  cd:
+    name: CD - Deploy to Railway
+    needs: ci
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        working-directory: my-production-agent
+        run: railway up --ci --service awake-wholeness
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
