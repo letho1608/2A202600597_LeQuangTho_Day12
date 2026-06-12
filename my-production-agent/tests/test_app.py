@@ -1,6 +1,5 @@
 import os
 import sys
-from unittest.mock import patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
@@ -11,10 +10,10 @@ os.environ["LOG_LEVEL"] = "ERROR"
 
 from fastapi.testclient import TestClient
 
-from app.main import app
 from app.config import settings
-from app.rate_limiter import rate_limiter
 from app.cost_guard import cost_guard
+from app.main import app
+from app.rate_limiter import rate_limiter
 from utils.mock_llm import ask
 
 client = TestClient(app)

@@ -1,6 +1,4 @@
-import time
 from datetime import datetime, timezone
-from typing import Optional
 
 from fastapi import HTTPException, status
 
@@ -46,7 +44,11 @@ class CostGuard:
                 },
             )
 
-    def record_usage(self, user_id: str, input_tokens: int = AVG_INPUT_TOKENS, output_tokens: int = AVG_OUTPUT_TOKENS) -> dict:
+    def record_usage(
+        self, user_id: str,
+        input_tokens: int = AVG_INPUT_TOKENS,
+        output_tokens: int = AVG_OUTPUT_TOKENS,
+    ) -> dict:
         input_cost = input_tokens * self.INPUT_TOKEN_PRICE
         output_cost = output_tokens * self.OUTPUT_TOKEN_PRICE
         total_cost = input_cost + output_cost
@@ -70,7 +72,10 @@ class CostGuard:
             "current_spend": round(current, 4),
             "budget": self.monthly_budget,
             "remaining": round(max(0, self.monthly_budget - current), 4),
-            "usage_percent": round((current / self.monthly_budget) * 100, 2) if self.monthly_budget > 0 else 0,
+            "usage_percent": (
+                round((current / self.monthly_budget) * 100, 2)
+                if self.monthly_budget > 0 else 0
+            ),
         }
 
 

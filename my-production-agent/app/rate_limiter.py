@@ -26,7 +26,10 @@ class RateLimiter:
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 detail={
                     "error": "rate_limit_exceeded",
-                    "message": f"Rate limit exceeded. Max {self.max_requests} requests per {self.window_seconds} seconds.",
+                    "message": (
+                        f"Rate limit exceeded. Max {self.max_requests} "
+                        f"requests per {self.window_seconds} seconds."
+                    ),
                     "retry_after_seconds": retry_after,
                 },
                 headers={"Retry-After": str(retry_after)},

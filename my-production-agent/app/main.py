@@ -2,13 +2,12 @@ import json
 import logging
 import os
 import signal
-import sys
 import time
 import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
@@ -20,8 +19,13 @@ from app.rate_limiter import check_rate_limit, rate_limiter
 from utils.mock_llm import ask
 
 logging.basicConfig(
-    level=getattr(logging, settings.LOG_LEVEL.upper()) if hasattr(settings, "LOG_LEVEL") else logging.INFO,
-    format='{"time": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "message": "%(message)s"}',
+    level=getattr(
+        logging, settings.LOG_LEVEL.upper()
+    ) if hasattr(settings, "LOG_LEVEL") else logging.INFO,
+    format=(
+        '{"time": "%(asctime)s", "level": "%(levelname)s", '
+        '"logger": "%(name)s", "message": "%(message)s"}'
+    ),
     datefmt="%Y-%m-%dT%H:%M:%S",
 )
 logger = logging.getLogger(settings.APP_NAME)
@@ -32,7 +36,9 @@ _graceful_shutdown = False
 
 class AskRequest(BaseModel):
     user_id: str = Field(default="default", description="User identifier for session")
-    question: str = Field(..., min_length=1, max_length=2000, description="Question to ask")
+    question: str = Field(
+        ..., min_length=1, max_length=2000, description="Question to ask"
+    )
 
 
 class AskResponse(BaseModel):
@@ -58,7 +64,9 @@ async def lifespan(app: FastAPI):
         "instance": get_instance_id(),
     }))
     yield
-    logger.info(json.dumps({"event": "shutdown", "message": "Shutting down gracefully"}))
+    logger.info(
+        json.dumps({"event": "shutdown", "message": "Shutting down gracefully"})
+    )
 
 
 app = FastAPI(
@@ -69,7 +77,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS.split(",") if settings.ALLOWED_ORIGINS != "*" else ["*"],
+    allow_origins=(
+        settings.ALLOWED_ORIGINS.split(",")
+        if settings.ALLOWED_ORIGINS != "*" else ["*"]
+    ),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -152,7 +163,9 @@ async def ask_endpoint(
     __: None = Depends(check_budget),
 ):
     if _graceful_shutdown:
-        raise HTTPException(status_code=503, detail="Server is shutting down, try again later")
+        raise HTTPException(
+            status_code=503, detail="Server is shutting down, try again later"
+        )
 
     answer = ask(body.question)
     usage = cost_guard.record_usage(user_id=body.user_id)
