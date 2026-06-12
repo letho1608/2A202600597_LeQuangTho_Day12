@@ -55,6 +55,12 @@ jobs:
 
       - name: Deploy to Railway
         working-directory: my-production-agent
-        run: railway up --ci --project awake-wholeness --service awake-wholeness
+        run: |
+          echo "Railway CLI version: $(railway --version)"
+          echo "Token length: ${#RAILWAY_TOKEN}"
+          echo "Current dir: $(pwd)"
+          echo "Files: $(ls -la)"
+          railway whoami
+          railway up --ci --project awake-wholeness --service awake-wholeness
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
