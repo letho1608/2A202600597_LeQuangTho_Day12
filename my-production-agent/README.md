@@ -71,6 +71,6 @@ my-production-agent/
 ├── .dockerignore            # Docker ignore rules
 ├── railway.toml             # Railway deployment config
 ├── render.yaml              # Render deployment config
-├── MISSION_ANSWERS.md       # Lab exercise answers
+├── reports.md       # Lab exercise answers
 └── DEPLOYMENT.md            # Deployment information
 ```

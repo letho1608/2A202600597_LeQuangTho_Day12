@@ -79,14 +79,14 @@ Client → Nginx (port 80) → Agent (port 8000) → Redis (port 6379)
 
 ### Exercise 3.1: Railway deployment
 
-**URL:** https://[student-agent].railway.app
+**URL:** https://awake-wholeness-production-46aa.up.railway.app
 
 **Test results:**
 ```bash
-curl https://[student-agent].railway.app/health
+curl https://awake-wholeness-production-46aa.up.railway.app/health
 # → {"status": "ok", "uptime": ..., "environment": "production"}
 
-curl -X POST https://[student-agent].railway.app/ask \
+curl -X POST https://awake-wholeness-production-46aa.up.railway.app/ask \
   -H "X-API-Key: my-secret-key" \
   -H "Content-Type: application/json" \
   -d '{"user_id":"test","question":"Hello"}'
@@ -248,7 +248,7 @@ Kết quả: Conversation history được bảo toàn dù request được serv
 
 ### Deployment URL
 ```
-https://[your-agent].railway.app
+https://awake-wholeness-production-46aa.up.railway.app
 ```
 
 ### Features implemented
